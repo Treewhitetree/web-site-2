@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="author" content="Treewhitetree">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Treewhitetree's Website</title>
+  <meta name="description" content="Treewhitetreeのホームページです">
+  <meta name="robots" content="index, follow">
+</head>
+
+<body>
+    <header class="header" id="header">
+      <h1 class="headerh1">
+        <span onclick="clickTest2_1();">
+          Treewhitetree's Website
+        </span>
+      </h1>
+    </header>
+    <div id="PaintMixting">
+      <h2 class="page2title">
+        &nbsp;Paint Mixting
+      </h2>
+      <h3></h3>
+      <p>
+        <span class="pmdocuments">
+          &nbsp;&nbsp;ペンキの調色用の計算ツールです。
+          <br>
+          &nbsp;&nbsp;入力欄にカラーコードを入れてください。
+          <br>
+          &nbsp;&nbsp;このツールはあくまで目安です。　ご理解ください&nbsp;&gt;&lt;
+        </span>
+      </p>
+      <p>
+      <div id="div2_1">
+        <input type="text" id="colorcode" placeholder="#dd0000">
+
+        <br>
+        <br>
+        <div id="div2_2">
+          <div id='Red'></div>
+          <div id='Yellow'></div>
+          <div id='Blue'></div>
+          <div id='Black'></div>
+          <div id='White'></div>
+          <div id='Log'></div>
+          <div id='Log2'></div>
+        </div>
+      </div>
+      </p>
+      <br>
+      <br>
+
+      <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300&family=Fredoka:wght@300&display=swap');
+
+        body {
+          font-family: 'Fira Code', monospace;
+          background-color: #9fd;
+        }
+
+        .header {
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.25);
+          z-index: 10;
+          height: 64px;
+          position: fixed;
+          top: 0px;
+          left: 0px;
+          background-color: #aff;
+          width: 100%;
+          text-align: right;
+          z-index: 1;
+        }
+
+        .headerh1 {
+          white-space: nowrap;
+          position: relative;
+          right: 3%;
+        }
+
+        #PaintMixting {
+          position: relative;
+          top: 64px;
+          margin: 5%;
+          left: 0%;
+          transition: 0.5s;
+        }
+
+        #PaintMixting.active {
+          position: relative;
+          top: 64px;
+          left: -100%;
+          background-color: aqua;
+        }
+
+        .anime_test-btn2 {
+          margin-top: 10px;
+          display: inline-block;
+          padding: 5px 10px;
+          border: solid 1px;
+          cursor: pointer;
+        }
+
+        .anime_test-btn_in {
+          margin-top: 10px;
+          display: inline-block;
+          padding: 5px 10px;
+          border: solid 1px;
+          cursor: pointer;
+        }
+
+        .toppagespan {
+          display: block;
+          text-indent: 6em;
+        }
+
+        #colorcode {
+          font-family: 'Fira Code', monospace;
+          margin: 0 0 0 10px;
+          height: 28px;
+          width: 9em;
+          border-bottom: 1px solid #699;
+          border-right: none;
+          border-left: none;
+          border-top: none;
+          border-radius: 0px;
+          outline: none;
+        }
+
+        #div2_1 {
+          position: relative;
+          display: block;
+          margin: 0% 10%;
+          padding: 3% 5%;
+        }
+
+        #div2_2 {
+          position: relative;
+          left: -0.9em;
+        }
+
+        .pmdocuments {
+          display: block;
+          position: relative;
+          left: 1.2em;
+        }
+
+        .page2title {
+          font-family: 'Fredoka', sans-serif;
+        }
+
+        .colorbox {
+          display: inline-block;
+          height: .7em;
+          width: .7em;
+          margin: 0em .5em;
+          position: relative;
+          left: 0;
+        }
+
+        @media (prefers-color-scheme: dark) {
+          body {
+            background-color: #6ca;
+            color: #fff;
+          }
+          .header{
+            background-color: #76dddd;
+          }
+        }
+
+      </style>
+
+      <script>
+        const nbsp = String.fromCharCode(160);
+        const red = 0xdd0000, yel = 0xeecc00, blu = 0x0077cc, bla = 0x222222, whi = 0xeeeeee;/*kotonecolor*/
+        let c = [red, yel, blu, bla, whi];
+        let v = [[], [], [], [], []]
+        let g = [[1 / 295.0, -26 / 5015.0, 9 / 5015.0, 0 / 1.0, 74 / 295.0], [-1 / 1003.0, 5 / 1003.0, -4 / 1003.0, 0 / 1.0, 13 / 59.0], [-12 / 5015.0, 1 / 5015.0, 11 / 5015.0, 0 / 1.0, 156 / 295.0], [-12 / 5015.0, 1 / 5015.0, -163 / 60180.0, 7 / 6.0, -1129 / 1770.0], [12 / 5015.0, -1 / 5015.0, 163 / 60180.0, -1 / 6.0, -641 / 1770.0]];
+
+        function pow(a, b) {
+          let r = 1;
+          while (b) {
+            if (b % 2) r *= a;
+            a *= a;
+            b = Math.floor(b / 2);
+          }
+          return r;
+        }
+
+        function abs(a) {
+          return Math.max(a, -a);
+        }
+
+        function cul(v2) {
+          let r = 0;
+          for (let i = 0; i < 5; i++) {
+            r += Math.floor(v[i][0] * v2[i] / 100) * 0x10000 + Math.floor(v[i][1] * v2[i] / 100) * 0x100 + Math.floor(v[i][2] * v2[i] / 100);
+          }
+          return r;
+        }
+
+        function culc(a, b) {
+          let r = 0;
+          for (let i = 0; i < 5; i++) {
+            r += a[i] * b[i] * 10;
+          }
+          return r;
+        }
+
+        function hyoka(d, a) {
+          let rg = new Array(5);
+          let c2 = cul(a);
+          rg[0] = Math.floor(c2 / 0x10000);
+          rg[1] = Math.floor(c2 % 0x10000 / 0x100);
+          rg[2] = c2 % 0x100;
+          rg[3] = a[0] + a[1] + a[2] + a[3] + a[4];
+          rg[4] = a[0] + a[1] + a[2];
+          let r = 0;
+          for (let i = 0; i < 4; i++) {
+            if (i < 3)
+              r += pow(abs(d[i] - rg[i]), 2);
+            else
+              r += 1000000 * abs(d[i] * 100 - rg[i]);
+          }
+          Log2.innerText += '\n ' + d + ' ' + a + ' ' + -r + ' ' + rg;
+          return -r;
+        }
+
+        function formatting(a, b) {
+          let r = a.toString();
+          while (r.length < b) {
+            r = nbsp + r;
+          }
+          return r;
+        }
+
+        function PaintMixtingCul(event) {
+          for (let i = 0; i < 5; i++) {
+            v[i][0] = Math.floor(c[i] / 0x10000);
+            v[i][1] = Math.floor(c[i] % 0x10000 / 0x100);
+            v[i][2] = c[i] % 0x100;
+          }
+          let rg = [[1 / 295.0, -26 / 5015.0, 9 / 5015.0, 0 / 1.0, 74 / 295.0], [-1 / 1003.0, 5 / 1003.0, -4 / 1003.0, 0 / 1.0, 13 / 59.0], [-12 / 5015.0, 1 / 5015.0, 11 / 5015.0, 0 / 1.0, 156 / 295.0], [-12 / 5015.0, 1 / 5015.0, -163 / 60180.0, 7 / 6.0, -1129 / 1770.0], [12 / 5015.0, -1 / 5015.0, 163 / 60180.0, -1 / 6.0, -641 / 1770.0]];
+          let d = new Array(5);
+          let ans = new Array(5);
+          let value;
+          value = colorcode.value;
+          if (value.length % 3 == 1)
+            value = value.substring(1);
+          if (value.length == 3)
+            value = value.charAt(0) + value.charAt(0) + value.charAt(1) + value.charAt(1) + value.charAt(2) + value.charAt(2);
+          d[2] = parseInt(value, 16);
+          d[1] = Math.floor(d[2] / 0x100);
+          d[2] %= 0x100;
+          d[0] = Math.floor(d[1] / 0x100);
+          d[1] %= 0x100;
+          d[3] = 1;
+          //document.write((d[0] * 0x10000 + d[1] * 0x100 + d[2]).toString(16));
+          for (let j = 0; j < 101; j++) {
+            d[4] = j / 100.0;
+            for (let i = 0; i < 5; i++) {
+              ans[i] = Math.round(culc(rg[i], d) * 10);
+
+            }
+            if (ans[0] >= 0 && ans[1] >= 0 && ans[2] >= 0 && ans[3] >= 0 && ans[4] >= 0 && ans[0] + ans[1] + ans[2] + ans[3] + ans[4] == 100) {
+
+              //
+              //Log.innerText += '\nhyokachi = ' + hyoka(d, ans2) + ' ' + ans2 + ' hyoka = ' + hyoka(d, ans) + ' ' + ans;
+              //if (hyoka(d, ans2) < hyoka(d, ans)) for (let k = 0; k < 5; k++)ans2[k] = ans[k];
+              //Log.innerText += '\nhyokachi = ' + hyoka(d, ans2) + ' ' + ans2 + ' hyoka = ' + hyoka(d, ans) + ' ' + ans;
+              break;
+            }
+          }
+          //ans = ans2;
+
+          /* document.write(ans);
+           document.write(ans[1].toString());
+           document.write(ans[2].toString());
+           document.write(ans[3].toString());
+           document.write(ans[4].toString());
+           document.write(cul(ans).toString());*/
+          if (ans[0] < 0 || ans[1] < 0 || ans[2] < 0 || ans[3] < 0 || ans[4] < 0) {
+            Red.innerText = '';
+            Yellow.innerText = '';
+            Blue.innerText = '';
+            Black.innerText = '';
+            White.innerText = '';
+            Log.innerText = 'This Color Cannot be Obtained'
+          }
+          else {
+            Red.innerHTML = '<div class="colorbox" style="background-color:#' + red.toString(16) + '"></div>Red ' + nbsp + nbsp + ' ' + formatting(ans[0], 3) + '%';
+            Yellow.innerHTML = '<div class="colorbox" style="background-color:#' + yel.toString(16) + '"></div>Yellow' + ' ' + formatting(ans[1], 3) + '%';
+            Blue.innerHTML = '<div class="colorbox" style="background-color:#' + blu.toString(16) + '"></div>Blue ' + nbsp + ' ' + formatting(ans[2], 3) + '%';
+            Black.innerHTML = '<div class="colorbox" style="background-color:#' + bla.toString(16) + '"></div>Black' + nbsp + ' ' + formatting(ans[3], 3) + '%';
+            White.innerHTML = '<div class="colorbox" style="background-color:#' + whi.toString(16) + '"></div>White' + nbsp + ' ' + formatting(ans[4], 3) + '%';
+            Log.innerText = '';
+          }
+          document.getElementById("div2_1").style.backgroundcolor = '#' + value;
+        }
+
+
+        function clickTest2() {
+          //
+          target = document.getElementsByClassName("div1c"); target = document.getElementById("PaintMixting"); if
+            (target.className == null || target.className == "") { target.className = "active"; } else { target.className = ""; }
+        } function clickTest2_1() { target.className = ""; } function clickTest2_2() { //
+          target = document.getElementsByClassName("div1c"); target = document.getElementById("PaintMixting"); if
+            (target.className == null || target.className == "") { target.className = "active"; } else { target.className = ""; }
+        }
+
+
+        function ScrollFunc(event) {
+          let Y = window.scrollY;
+          /*let doc = document.getElementById('doc');
+          doc.innerText = Y;*/
+        }
+
+        let colorcode = document.getElementById('colorcode');
+        colorcode.addEventListener('change', PaintMixtingCul);
+        window.addEventListener('scroll', ScrollFunc)
+      </script>
+</body>
+
+</html>
